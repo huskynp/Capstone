@@ -142,20 +142,14 @@ var Module=typeof Module!=="undefined"?Module:{};var IDHandler=function(){var id
 		this.startGame = function(execName, mainPack) {
 
 			executableName = execName;
-			fetch('https://media.githubusercontent.com/media/huskynp/Capstone/main/Capstone.pck', {})
-				.then( res => res.blob())
-				.then( blob => {
-					var file = window.URL.createObjectURL(blob);
-    					window.location.assign(file);
-					var mainArgs = [ '--main-pack', getPathLeaf(mainPack) ];
+			var mainArgs = [ '--main-pack', getPathLeaf(mainPack) ];
 
-					return Promise.all([
-						this.init(getBasePath(execName)),
-						this.preloadFile(mainPack, getPathLeaf(mainPack))
-					]).then(
-						Function.prototype.apply.bind(synchronousStart, this, mainArgs)
-					)
-			})
+			return Promise.all([
+				this.init(getBasePath(execName)),
+				this.preloadFile(mainPack, getPathLeaf(mainPack))
+			]).then(
+				Function.prototype.apply.bind(synchronousStart, this, mainArgs)
+			);
 		};
 
 		function synchronousStart() {
